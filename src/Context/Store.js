@@ -1,16 +1,22 @@
 import { EventEmitter } from "events";
-import { mapActions } from "./utils";
+import { mapActions,mapComputed } from "./utils";
 export default class Store extends EventEmitter {
-  constructor({ actions = {}, state = {} }) {
+  constructor({ actions = {}, state = {}, computed = {} }) {
     super();
     this.state = state;
     this.actions = mapActions.call(this, actions);
+    this.computed = mapComputed.call(this,computed);
+    this._computed=computed;
   }
   getState = () => {
     return this.state;
   };
   setState = state => {
-    this.state = state;
-    this.emit("update", this.state);
+    this.state = {...this.state,...state}
+    this.computed = mapComputed.call(this, this._computed);
+    this.emit("update", this);
+    Object.keys(state).forEach(key => {
+      this.emit(key, this.state[key]);
+    });
   };
 }

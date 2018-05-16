@@ -8,12 +8,18 @@ const styles = {
 };
 var y= new Store({
   state:{
-    count:0
+    count:0,
+    c:3
   },
   actions:{
     inc({count}){
       return({count:count+1})
     }
+  },
+  computed:{
+     name(state){
+       return state.count
+     }
   }
 })
 const X= connect((props)=>{
