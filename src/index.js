@@ -27,7 +27,7 @@ const X= connect((props)=>{
   return<div>Test
     {props.count}
     <button onClick={props.inc} >+</button>
-    <button onClick={y.actions.inc} >+</button>
+    <button onClick={e=>y.dispatch("inc")} >+</button>
   </div>
 })
 const App = () => (

@@ -7,7 +7,7 @@ function isPromise(obj) {
   );
 }
 export const checkState = (prevState, state, keys) => {};
-export const mapActions = function(actions) {
+export const mapActions = function(actions,done) {
   return Object.keys(actions).reduce((finalActions, key) => {
     return {
       ...finalActions,
@@ -16,9 +16,9 @@ export const mapActions = function(actions) {
         let result = actions[key](state, ...args);
 
         if (isPromise(result)) {
-          return result.then(this.setState).catch(console.log);
+          return result.then(done).catch(console.log);
         } else if (typeof result === "object") {
-          return this.setState(result);
+          return done(result);
         }
       }
     };
