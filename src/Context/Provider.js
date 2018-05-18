@@ -1,7 +1,13 @@
-import React, { Component} from "react";
-import Context from "./Context"
-var _ = require('lodash');
-export default class Provider extends Component {
+import React, { Component } from "react";
+import Context from "./Context";
+import Store from "./Store";
+import PropTypes from "prop-types";
+class Provider extends Component {
+
+
+  static propTypes = {
+    store: PropTypes.instanceOf(Store)
+  };
   constructor(props) {
     super(props);
 
@@ -9,24 +15,22 @@ export default class Provider extends Component {
     if (!store) {
       throw new Error("store is rquired");
     }
-    console.log(store)
-    store.on("update",( { state, computed}) => {
+    store.on("update", ({ state, computed }) => {
       this.computed = computed;
       this.setState(state);
     });
-    this.state=store.state
+    this.state = store.state;
     this.actions = store.actions;
-    this.computed=store.computed;
+    this.computed = store.computed;
   }
-  createState(){
-    return { 
-      ...this.state, 
-      ...this.actions, 
-      ...this.computed 
-    }
+  createState() {
+    return {
+      ...this.state,
+      ...this.actions,
+      ...this.computed
+    };
   }
   render() {
-  
     return (
       <Context.Provider value={this.createState()}>
         {this.props.children}
@@ -34,3 +38,7 @@ export default class Provider extends Component {
     );
   }
 }
+
+
+
+export default Provider
